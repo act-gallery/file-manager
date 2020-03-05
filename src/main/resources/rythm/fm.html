@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>File Manager Home</title>
+    <style>
+        label {
+            display: inline-block;
+            width: 200px;
+            text-align: right;
+            padding: 5px 15px;
+        }
+        input {
+            padding: 5px 15px;
+        }
+        #submit {
+            margin-left: 249px;
+        }
+    </style>
+    <script src="/~/asset/js/jquery.js"></script>
+    <script src="/~/asset/js/jquery.ext.js"></script>
+</head>
+<body>
+<h1>Simple File Manager</h1>
+
+<h3>Upload new file</h3>
+<form method="post" action="/fm/upload" enctype="multipart/form-data">
+    <div>
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" style="margin-left: 15px">
+    </div>
+    <div>
+        <label for="file">Select file</label>
+        <input id="file" name="file" type="file">
+    </div>
+    <div>
+        <button id="submit" type="submit">Submit</button>
+    </div>
+</form>
+
+@args Iterable<demo.act.fm.UploadFile> files
+    @if(files) {
+    <h3>Upload file list</h3>
+    <ul id="file-list">
+        @for(files) {
+        <li>
+            <a href="/fm/download/@_.ssKey" target="_blank">@_.description</a>
+            &nbsp;
+            <button type="button" class="btn_delete" data-id="@_.id">Delete</button>
+        </li>
+        }
+    </ul>
+    <script>
+        $('.btn_delete').on('click', function() {
+            $.delete('/fm/' + $(this).data('id'), function(){
+                window.location.reload()
+            })
+        })
+    </script>
+    }
+</body>
+</html>
